@@ -12,8 +12,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/textPurpose"
         android:textAlignment="center"
-        android:hint="Purpose"
-        />
+        android:hint="Purpose">
+
+    </EditText>
 
     <EditText
         android:id="@+id/textAmount"

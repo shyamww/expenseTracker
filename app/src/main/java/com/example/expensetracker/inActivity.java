@@ -17,10 +17,10 @@ public class inActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_in);
-
         purposeText = findViewById(R.id.textPurpose);
         amountText = findViewById(R.id.textAmount);
         addData = findViewById(R.id.btnAdd);
+
 
         addData.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,18 +45,4 @@ public class inActivity extends Activity {
 
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        purposeText = findViewById(R.id.textPurpose);
-//        amountText = findViewById(R.id.textAmount);
-//
-//        String purpose = purposeText.getText().toString();
-//        String Amount = amountText.getText().toString();
-//        String toSend = purpose + " " + Amount;
-//
-//        Intent intent = new Intent();
-//        intent.putExtra("message", toSend);
-//        setResult(RESULT_OK, intent);
-//        finish();
-//    }
 }
