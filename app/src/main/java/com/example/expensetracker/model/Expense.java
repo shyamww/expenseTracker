@@ -12,6 +12,7 @@ public class Expense {
         this.amount = amount;
         this.check_for_update = check_for_update;
     }
+
     public Expense(String detail, String amount, String check_for_update) {
         this.detail = detail;
         this.amount = amount;

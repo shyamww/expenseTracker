@@ -20,9 +20,13 @@ public class MyDbHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+//        String create = "CREATE TABLE " + Params.TABLE_NAME + " ("
+//            + Params.KEY_ID + "INTEGER PRIMARY KEY, " + Params.KEY_DETAIL
+//            + "TEXT," + Params.KEY_AMOUNT + "TEXT" + Params.KEY_CHECK_UPDATE + "TEXT" + ")";
+
         String create = "CREATE TABLE " + Params.TABLE_NAME + "("
-            + Params.KEY_ID + " INTEGER PRIMARY KEY," + Params.KEY_DETAIL
-            + " TEXT, " + Params.KEY_AMOUNT + " TEXT" + Params.KEY_CHECK_UPDATE +" TEXT" + ")";
+                + Params.KEY_ID + " INTEGER PRIMARY KEY," + Params.KEY_DETAIL
+                + " TEXT, " + Params.KEY_AMOUNT + " TEXT, " + Params.KEY_CHECK_UPDATE + " TEXT" + ")";
 
         Log.d("dbFirst", "my first db created: " + create);
         db.execSQL(create);
@@ -30,8 +34,12 @@ public class MyDbHandler extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
-
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+//        // Drop older table if existed
+//        db.execSQL("DROP TABLE IF EXISTS " + Params.TABLE_NAME);
+//
+//        // Create tables again
+//        onCreate(db);
     }
 
     public void addExpense(Expense expense){
@@ -41,7 +49,6 @@ public class MyDbHandler extends SQLiteOpenHelper {
         values.put(Params.KEY_DETAIL, expense.getDetail());
         values.put(Params.KEY_AMOUNT, expense.getAmount());
         values.put(Params.KEY_CHECK_UPDATE, expense.getCheck_for_update());
-
 
 
         try {
@@ -60,6 +67,9 @@ public class MyDbHandler extends SQLiteOpenHelper {
         Log.d("dbFirst", "inside getall 1");
         List<Expense> expenseList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
+//        SQLiteDatabase db = this.getWritableDatabase();
+        String x = this.getDatabaseName();
+        Log.d("dbFirst", "Database name is: " + x);
 
         //generate query to read the db
         String select = "Select * from "+ Params.TABLE_NAME;
