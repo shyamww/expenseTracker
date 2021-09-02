@@ -30,10 +30,18 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> expenses = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Toast.makeText(this, "hello shyam", Toast.LENGTH_SHORT).show();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         final ListView myListView = findViewById(R.id.list_item);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String value = extras.getString("backtomain");
+            Toast.makeText(this, value +" backToMainBro", Toast.LENGTH_SHORT).show();
+            //The key argument here must match that used in the other activity
+        }
 
         expenses.add("1");
         expenses.add("2");
@@ -117,7 +125,19 @@ public class MainActivity extends AppCompatActivity {
         myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                startActivityForResult(new Intent(getApplicationContext(), updateDeleteActivity.class), 1001);
+                int pos= i;
+                String dataOfThisRow = expenses.get(pos);
+//                Toast.makeText(MainActivity.this, dataOfThisRow, Toast.LENGTH_SHORT).show();
+//                startActivityForResult(new Intent(getApplicationContext(), updateDeleteActivity.class), 1001);
+
+//                Intent intent = new Intent(MainActivity.this,updateDeleteActivity.class);
+//                String message = "hey main, plz learn 2 be chill and not call the RA next time";
+//                intent.putExtra("myParam", message);
+//                startActivityForResult(intent,1001);
+
+                Intent intent = new Intent(MainActivity.this, updateDeleteActivity.class);
+                intent.putExtra("key",dataOfThisRow);
+                startActivity(intent);
             }
         });
 

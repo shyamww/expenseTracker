@@ -9,16 +9,16 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textPurpose_d"
+        android:id="@+id/textPurpose_update"
         android:textAlignment="center"
         android:hint="Purpose"
         />
 
     <EditText
-        android:id="@+id/textAmount_d"
+        android:id="@+id/textAmount_update"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textPurpose_d"
+        android:layout_below="@+id/textPurpose_update"
         android:textAlignment="center"
         android:hint="Amount"
 
@@ -28,7 +28,7 @@
         android:id="@+id/btn_update"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textAmount_d"
+        android:layout_below="@+id/textAmount_update"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
         android:text="Update" />
