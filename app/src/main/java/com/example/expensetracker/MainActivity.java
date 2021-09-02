@@ -87,6 +87,18 @@ public class MainActivity extends AppCompatActivity {
                         .setIcon(android.R.drawable.ic_delete)
                         .setTitle("Are you sure ?")
                         .setMessage(dataOfThisRow)
+                        .setNeutralButton("Update", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Toast.makeText(MainActivity.this, "Update successfull", Toast.LENGTH_SHORT).show();
+                                new AlertDialog.Builder(MainActivity.this)
+                                        .setIcon(android.R.drawable.ic_dialog_info)
+                                        .setTitle("Are you sure ?")
+                                        .setMessage("UPDATE HO RHA H")
+                                        .setNegativeButton("No", null)
+                                        .show();
+                            }
+                        })
                         .setPositiveButton("yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -113,10 +125,6 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(new Intent(getApplicationContext(), outActivity.class), 1000);
     }
 
-
-
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);
@@ -136,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
         }
         calculateTotal();
     }
-
 
 
     private void calculateTotal() {
