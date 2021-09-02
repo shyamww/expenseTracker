@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         expenses.add("2");
         expenses.add("3");
         expenses.add("4");
-//        expenses.add("5");
+        expenses.add("SQLite starts");
 //        expenses.add("6");
 //        expenses.add("7");
 //        expenses.add("8");
