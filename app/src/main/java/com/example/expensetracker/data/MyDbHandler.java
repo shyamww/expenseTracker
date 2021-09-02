@@ -20,10 +20,6 @@ public class MyDbHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-//        String create = "CREATE TABLE " + Params.TABLE_NAME + " ("
-//            + Params.KEY_ID + "INTEGER PRIMARY KEY, " + Params.KEY_DETAIL
-//            + "TEXT," + Params.KEY_AMOUNT + "TEXT" + Params.KEY_CHECK_UPDATE + "TEXT" + ")";
-
         String create = "CREATE TABLE " + Params.TABLE_NAME + "("
                 + Params.KEY_ID + " INTEGER PRIMARY KEY," + Params.KEY_DETAIL
                 + " TEXT, " + Params.KEY_AMOUNT + " TEXT, " + Params.KEY_CHECK_UPDATE + " TEXT" + ")";
@@ -64,12 +60,10 @@ public class MyDbHandler extends SQLiteOpenHelper {
     }
 
     public List<Expense> getAllExpenses(){
-        Log.d("dbFirst", "inside getall 1");
         List<Expense> expenseList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-//        SQLiteDatabase db = this.getWritableDatabase();
         String x = this.getDatabaseName();
-        Log.d("dbFirst", "Database name is: " + x);
+//        Log.d("dbFirst", "Database name is: " + x);
 
         //generate query to read the db
         String select = "Select * from "+ Params.TABLE_NAME;
@@ -77,7 +71,6 @@ public class MyDbHandler extends SQLiteOpenHelper {
 
         //Loop
         if(cursor.moveToFirst()){
-            Log.d("dbFirst", "inside getall 2");
             do{
                 Expense expense = new Expense();
                 expense.setId(Integer.parseInt(cursor.getString(0)));
@@ -88,7 +81,6 @@ public class MyDbHandler extends SQLiteOpenHelper {
 
             }while(cursor.moveToNext());
         }
-        else Log.d("dbFirst", "inside getall 3");
         return expenseList;
     }
 

@@ -33,6 +33,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <Button
+        android:id="@+id/btn_refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Refresh"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        app:layout_constraintEnd_toStartOf="@+id/btnIn"
+        app:layout_constraintStart_toEndOf="@+id/btnOut" />
+
     <ListView
         android:id="@+id/list_item"
         android:layout_width="match_parent"
