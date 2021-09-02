@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
@@ -21,7 +22,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.expensetracker.data.MyDbHandler;
+import com.example.expensetracker.model.Expense;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,6 +56,49 @@ public class MainActivity extends AppCompatActivity {
 //        expenses.add("14");
 
 
+        //db things starts from here
+        MyDbHandler db = new MyDbHandler(MainActivity.this);
+
+        //Creating data for the db
+        Expense e1 = new Expense();
+        e1.setDetail("Tea");
+        e1.setAmount("100");
+        e1.setCheck_for_update("No");
+        //Adding data to the db
+        db.addExpense(e1);
+
+        //Creating data for the db
+        Expense e2 = new Expense();
+        e2.setDetail("Coffee");
+        e2.setAmount("80");
+        e2.setCheck_for_update("No");
+        //Adding data to the db
+        db.addExpense(e2);
+
+        //Creating data for the db
+        Expense e3 = new Expense();
+        e3.setDetail("GolGappa");
+        e3.setAmount("500");
+        e3.setCheck_for_update("No");
+        //Adding data to the db
+        db.addExpense(e3);
+
+        Log.d("dbFirst", "Ids are successfully added to the db");
+
+
+        //get all the expenses
+        List<Expense> allexpense = db.getAllExpenses();
+        Log.d("dbFirst", "check 1");
+        for(Expense expense: allexpense){
+            Log.d("dbFirst", "check 2");
+            Log.d("dbFirst", "[Id: "+ expense.getId()+ ", Detail: "+ expense.getDetail()
+                    + ", Amount: " + expense.getAmount() + ", Update_Required: " + expense.getCheck_for_update());
+        }
+
+
+
+
+        //db things end here
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, expenses);
 
         myListView.setAdapter(arrayAdapter);
