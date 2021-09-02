@@ -4,34 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".inActivity">
-
+    tools:context=".updateDeleteActivity">
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textPurpose"
+        android:id="@+id/textPurpose_d"
         android:textAlignment="center"
-        android:hint="Purpose" />
+        android:hint="Purpose"
+        />
 
     <EditText
-        android:id="@+id/textAmount"
+        android:id="@+id/textAmount_d"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textPurpose"
+        android:layout_below="@+id/textPurpose_d"
         android:textAlignment="center"
         android:hint="Amount"
 
         />
+
     <Button
-        android:id="@+id/btnAdd"
+        android:id="@+id/btn_update"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textAmount"
+        android:layout_below="@+id/textAmount_d"
         android:layout_centerHorizontal="true"
-        android:text="Add"
-
-        />
+        android:layout_marginTop="8dp"
+        android:text="Update" />
 
 
 </RelativeLayout>

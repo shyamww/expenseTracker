@@ -78,39 +78,46 @@ public class MainActivity extends AppCompatActivity {
 
 
         //delete an item from the list
-        myListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//        myListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                final int which_pos = i;
+//                String dataOfThisRow = expenses.get(which_pos);
+//                new AlertDialog.Builder(MainActivity.this)
+//                        .setIcon(android.R.drawable.ic_delete)
+//                        .setTitle("Are you sure ?")
+//                        .setMessage(dataOfThisRow)
+//                        .setNeutralButton("Update", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialogInterface, int i) {
+//                                Toast.makeText(MainActivity.this, "Update successfull", Toast.LENGTH_SHORT).show();
+//                                new AlertDialog.Builder(MainActivity.this)
+//                                        .setIcon(android.R.drawable.ic_dialog_info)
+//                                        .setTitle("Are you sure ?")
+//                                        .setMessage("UPDATE HO RHA H")
+//                                        .setNegativeButton("No", null)
+//                                        .show();
+//                            }
+//                        })
+//                        .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialogInterface, int i) {
+//                                expenses.remove(which_pos);
+//                                arrayAdapter.notifyDataSetChanged();
+//
+//                            }
+//                        })
+//                        .setNegativeButton("No", null)
+//                        .show();
+//                return true;
+//
+//            }
+//        });
+
+        myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                final int which_pos = i;
-                String dataOfThisRow = expenses.get(which_pos);
-                new AlertDialog.Builder(MainActivity.this)
-                        .setIcon(android.R.drawable.ic_delete)
-                        .setTitle("Are you sure ?")
-                        .setMessage(dataOfThisRow)
-                        .setNeutralButton("Update", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                Toast.makeText(MainActivity.this, "Update successfull", Toast.LENGTH_SHORT).show();
-                                new AlertDialog.Builder(MainActivity.this)
-                                        .setIcon(android.R.drawable.ic_dialog_info)
-                                        .setTitle("Are you sure ?")
-                                        .setMessage("UPDATE HO RHA H")
-                                        .setNegativeButton("No", null)
-                                        .show();
-                            }
-                        })
-                        .setPositiveButton("yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                expenses.remove(which_pos);
-                                arrayAdapter.notifyDataSetChanged();
-
-                            }
-                        })
-                        .setNegativeButton("No", null)
-                        .show();
-                return true;
-
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                startActivityForResult(new Intent(getApplicationContext(), updateDeleteActivity.class), 1001);
             }
         });
 
