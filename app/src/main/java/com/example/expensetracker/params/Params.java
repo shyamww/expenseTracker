@@ -10,4 +10,5 @@ public class Params {
     public static final String KEY_DETAIL = "detail";
     public static final String KEY_AMOUNT = "amount";
     public static final String KEY_CHECK_UPDATE = "check_for_update";
+    public static final String KEY_IN_AND_OUT = "check_for_in_out";
 }

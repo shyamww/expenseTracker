@@ -22,7 +22,8 @@ public class MyDbHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String create = "CREATE TABLE " + Params.TABLE_NAME + "("
                 + Params.KEY_ID + " INTEGER PRIMARY KEY," + Params.KEY_DETAIL
-                + " TEXT, " + Params.KEY_AMOUNT + " TEXT, " + Params.KEY_CHECK_UPDATE + " TEXT" + ")";
+                + " TEXT, " + Params.KEY_AMOUNT + " TEXT, " + Params.KEY_CHECK_UPDATE + " TEXT, "
+                + Params.KEY_IN_AND_OUT + " TEXT" + ")";
 
         Log.d("dbFirst", "my first db created: " + create);
         db.execSQL(create);
@@ -45,6 +46,7 @@ public class MyDbHandler extends SQLiteOpenHelper {
         values.put(Params.KEY_DETAIL, expense.getDetail());
         values.put(Params.KEY_AMOUNT, expense.getAmount());
         values.put(Params.KEY_CHECK_UPDATE, expense.getCheck_for_update());
+        values.put(Params.KEY_IN_AND_OUT, expense.getCheck_for_in_out());
 
 
         try {
@@ -77,6 +79,7 @@ public class MyDbHandler extends SQLiteOpenHelper {
                 expense.setDetail(cursor.getString(1));
                 expense.setAmount(cursor.getString(2));
                 expense.setCheck_for_update(cursor.getString(3));
+                expense.setCheck_for_in_out(cursor.getString(4));
                 expenseList.add(expense);
 
             }while(cursor.moveToNext());

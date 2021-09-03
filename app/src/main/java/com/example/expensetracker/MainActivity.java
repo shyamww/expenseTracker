@@ -49,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
             int id_of_this_row = expense.getId();
             String detail_of_this_row = expense.getDetail();
             String amount_of_this_row = expense.getAmount();
-            String data_of_this_row = id_of_this_row + " " + detail_of_this_row +" -> " + amount_of_this_row;
+            String in_or_out_of_this_row = expense.getCheck_for_in_out();
+            String data_of_this_row = id_of_this_row + " " + detail_of_this_row +" -> " + amount_of_this_row + " = " + in_or_out_of_this_row;
             Log.d("dbFirst",  id_of_this_row+" " + expense.getCheck_for_update());
             expenses.add(data_of_this_row);
         }
@@ -174,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
             e1.setDetail(detail_data);
             e1.setAmount(amount_data);
             e1.setCheck_for_update("No");
+            e1.setCheck_for_in_out("In");
             //Adding data to the db
             db.addExpense(e1);
         }
@@ -190,6 +192,7 @@ public class MainActivity extends AppCompatActivity {
             e1.setDetail(detail_data);
             e1.setAmount(amount_data);
             e1.setCheck_for_update("No");
+            e1.setCheck_for_in_out("Out");
             //Adding data to the db
             db.addExpense(e1);
         }
@@ -215,7 +218,8 @@ public class MainActivity extends AppCompatActivity {
                 int id_of_this_row = expense.getId();
                 String detail_of_this_row = expense.getDetail();
                 String amount_of_this_row = expense.getAmount();
-                String data_of_this_row = id_of_this_row + " " + detail_of_this_row + " -> " + amount_of_this_row;
+                String in_or_out_of_this_row = expense.getCheck_for_in_out();
+                String data_of_this_row = id_of_this_row + " " + detail_of_this_row + " -> " + amount_of_this_row + "==" + in_or_out_of_this_row;
                 expenses.add(data_of_this_row);
             }
     }
