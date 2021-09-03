@@ -32,10 +32,10 @@ public class MyDbHandler extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 //        // Drop older table if existed
-//        db.execSQL("DROP TABLE IF EXISTS " + Params.TABLE_NAME);
-//
-//        // Create tables again
-//        onCreate(db);
+        db.execSQL("DROP TABLE IF EXISTS " + Params.TABLE_NAME);
+
+        // Create tables again
+        onCreate(db);
     }
 
     public void addExpense(Expense expense){
@@ -82,6 +82,31 @@ public class MyDbHandler extends SQLiteOpenHelper {
             }while(cursor.moveToNext());
         }
         return expenseList;
+    }
+
+    public void updateExpense(int idd, String newDetail, String newAmount){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues data = new ContentValues();
+        data.put(Params.KEY_DETAIL,newDetail);
+        data.put(Params.KEY_AMOUNT,newAmount);
+        db.update(Params.TABLE_NAME, data, Params.KEY_ID +"=" +idd, null);
+        db.close();
+    }
+
+    public void make_check_column_yes_for_delete(int idd){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues data = new ContentValues();
+        data.put(Params.KEY_CHECK_UPDATE,"Yes");
+        db.update(Params.TABLE_NAME, data, Params.KEY_ID +"=" +idd, null);
+        db.close();
+    }
+
+    public void delet_the_row_from_update_activity(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues data = new ContentValues();
+        String ckk = "Yes";
+        db.delete(Params.TABLE_NAME,"check_for_update=?",new String[]{"Yes"});
+        db.close();
     }
 
 }

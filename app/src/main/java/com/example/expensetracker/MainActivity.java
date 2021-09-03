@@ -34,59 +34,13 @@ public class MainActivity extends AppCompatActivity {
     String myaddedGlobaldata;
     ArrayList<String> expenses = new ArrayList<>();
     MyDbHandler db = new MyDbHandler(MainActivity.this);
-    boolean check_to_update_bool=false;
+    int id_to_update_row;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         final ListView myListView = findViewById(R.id.list_item);
-
-//        expenses.add("1");
-//        expenses.add("2");
-//        expenses.add("3");
-//        expenses.add("4");
-//        expenses.add("SQLite starts");
-//        expenses.add("6");
-//        expenses.add("7");
-//        expenses.add("8");
-//        expenses.add("9");
-//        expenses.add("10");
-//        expenses.add("11");
-//        expenses.add("12");
-//        expenses.add("13");
-//        expenses.add("14");
-
-
-        //db things starts from here
-//        MyDbHandler db = new MyDbHandler(MainActivity.this);
-
-        //Creating data for the db
-//        Expense e1 = new Expense();
-//        e1.setDetail("Tea");
-//        e1.setAmount("100");
-//        e1.setCheck_for_update("No");
-//        //Adding data to the db
-//        db.addExpense(e1);
-//
-//        //Creating data for the db
-//        Expense e2 = new Expense();
-//        e2.setDetail("Coffee");
-//        e2.setAmount("80");
-//        e2.setCheck_for_update("No");
-//        //Adding data to the db
-//        db.addExpense(e2);
-//
-//        //Creating data for the db
-//        Expense e3 = new Expense();
-//        e3.setDetail("GolGappa");
-//        e3.setAmount("500");
-//        e3.setCheck_for_update("No");
-//        //Adding data to the db
-//        db.addExpense(e3);
-//
-//        Log.d("dbFirst", "Ids are successfully added to the db");
-
 
         //get all the expenses
         List<Expense> allexpense = db.getAllExpenses();
@@ -135,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 int val = expenses.size();
                 goToOutActivity();
-
             }
         });
 
@@ -181,11 +134,17 @@ public class MainActivity extends AppCompatActivity {
         myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                String row_data = expenses.get(i);
+                String a = row_data.contains(" ") ? row_data.split(" ")[0] : row_data;
+                int id_of_this_row_in_db =Integer.parseInt(a);
+                id_to_update_row = id_of_this_row_in_db;
+                db.make_check_column_yes_for_delete(id_to_update_row);
+//                Toast.makeText(MainActivity.this, row_data, Toast.LENGTH_SHORT).show();
                 startActivityForResult(new Intent(getApplicationContext(), updateDeleteActivity.class), 1001);
             }
+
         });
-
-
 
     }
 
@@ -205,9 +164,7 @@ public class MainActivity extends AppCompatActivity {
         {
             tIn = tIn + 1;
             myaddedGlobaldata = "+" + data.getStringExtra("message") ;
-//            expenses.add(myaddedGlobaldata);
-            Toast.makeText(this, myaddedGlobaldata, Toast.LENGTH_SHORT).show();
-
+//            Toast.makeText(this, myaddedGlobaldata, Toast.LENGTH_SHORT).show();
             String detail_data = myaddedGlobaldata.contains(" ") ? myaddedGlobaldata.split(" ")[0] : myaddedGlobaldata;
             String amount_data = myaddedGlobaldata.substring(myaddedGlobaldata.lastIndexOf(" ")+1);
 
@@ -218,19 +175,15 @@ public class MainActivity extends AppCompatActivity {
             e1.setCheck_for_update("No");
             //Adding data to the db
             db.addExpense(e1);
-            check_to_update_bool=true;
         }
         //Out
         if(requestCode == 1000 && resultCode == RESULT_OK)
         {
             tOut = tOut +1;
             myaddedGlobaldata = "-" + data.getStringExtra("message_o");
-//            expenses.add(myaddedGlobaldata);
-            Toast.makeText(this, myaddedGlobaldata, Toast.LENGTH_SHORT).show();
-
+//            Toast.makeText(this, myaddedGlobaldata, Toast.LENGTH_SHORT).show();
             String detail_data = myaddedGlobaldata.contains(" ") ? myaddedGlobaldata.split(" ")[0] : myaddedGlobaldata;
             String amount_data = myaddedGlobaldata.substring(myaddedGlobaldata.lastIndexOf(" ")+1);
-
             //Creating data for the db
             Expense e1 = new Expense();
             e1.setDetail(detail_data);
@@ -238,25 +191,23 @@ public class MainActivity extends AppCompatActivity {
             e1.setCheck_for_update("No");
             //Adding data to the db
             db.addExpense(e1);
-            check_to_update_bool=true;
         }
         //Item click or Update
         if(requestCode == 1001 && resultCode == RESULT_OK)
         {
             tIn = tIn + 1;
-            myaddedGlobaldata = "+" + data.getStringExtra("message_u") ;
-//            expenses.add(myaddedGlobaldata);
-            Toast.makeText(this, myaddedGlobaldata, Toast.LENGTH_SHORT).show();
-//            check_to_update_bool=true;
+            myaddedGlobaldata = data.getStringExtra("message_u") ;
+//            Toast.makeText(this, myaddedGlobaldata, Toast.LENGTH_SHORT).show();
+            String detail_data = myaddedGlobaldata.contains(" ") ? myaddedGlobaldata.split(" ")[0] : myaddedGlobaldata;
+            String amount_data = myaddedGlobaldata.substring(myaddedGlobaldata.lastIndexOf(" ")+1);
+            // id is id_to_update_row
+            db.updateExpense(id_to_update_row, detail_data, amount_data);
 
         }
         calculateTotal();
-//        fetchTheCompleteList();
     }
 
     private void fetchTheCompleteList() {
-
-        if(check_to_update_bool) {
             List<Expense> allexpense = db.getAllExpenses();
             expenses.clear();
             for (Expense expense : allexpense) {
@@ -264,14 +215,9 @@ public class MainActivity extends AppCompatActivity {
                 String detail_of_this_row = expense.getDetail();
                 String amount_of_this_row = expense.getAmount();
                 String data_of_this_row = id_of_this_row + " " + detail_of_this_row + " -> " + amount_of_this_row;
-                //            Log.d("dbFirst", "[Id: "+ id_of_this_row+ ", Detail: "+ detail_of_this_row
-                //                    + ", Amount: " + amount_of_this_row + ", Update_Required: " + expense.getCheck_for_update());
                 expenses.add(data_of_this_row);
             }
-            check_to_update_bool=false;
-        }
     }
-
 
     private void calculateTotal() {
         TextView totalVal = findViewById(R.id.totalInOut);

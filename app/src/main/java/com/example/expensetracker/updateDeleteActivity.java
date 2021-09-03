@@ -14,10 +14,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.expensetracker.data.MyDbHandler;
+
 public class updateDeleteActivity extends AppCompatActivity {
 
     private EditText purposeText, amountText;
     private Button updateData;
+    MyDbHandler db = new MyDbHandler(updateDeleteActivity.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +62,10 @@ public class updateDeleteActivity extends AppCompatActivity {
                 this.finish();
                 return true;
             case R.id.add:
-                Toast.makeText(this, "delete is clicked", Toast.LENGTH_SHORT).show();
-                return(true);
+                db.delet_the_row_from_update_activity();
+                Toast.makeText(this, "deleted", Toast.LENGTH_SHORT).show();
+                this.finish();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
