@@ -31,6 +31,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     int tIn=0,tOut=0;
+    double total_in= 0.0,total_out= 0.0;
     String myaddedGlobaldata;
     ArrayList<String> expenses = new ArrayList<>();
     MyDbHandler db = new MyDbHandler(MainActivity.this);
@@ -197,7 +198,6 @@ public class MainActivity extends AppCompatActivity {
         {
             tIn = tIn + 1;
             myaddedGlobaldata = data.getStringExtra("message_u") ;
-//            Toast.makeText(this, myaddedGlobaldata, Toast.LENGTH_SHORT).show();
             String detail_data = myaddedGlobaldata.contains(" ") ? myaddedGlobaldata.split(" ")[0] : myaddedGlobaldata;
             String amount_data = myaddedGlobaldata.substring(myaddedGlobaldata.lastIndexOf(" ")+1);
             // id is id_to_update_row
@@ -209,6 +209,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void fetchTheCompleteList() {
             List<Expense> allexpense = db.getAllExpenses();
+            total_in=total_out=0.0;
             expenses.clear();
             for (Expense expense : allexpense) {
                 int id_of_this_row = expense.getId();

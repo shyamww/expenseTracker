@@ -35,13 +35,6 @@ public class inActivity extends AppCompatActivity {
         addData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                String purpose = purposeText.getText().toString();
-//                String Amount = amountText.getText().toString();
-//                String toSend = purpose + " " + Amount;
-//
-//                Intent intent = new Intent(inActivity.this, MainActivity.class);
-//                intent.putExtra("keyname", toSend);
-//                startActivity(intent);
                 String purpose = purposeText.getText().toString();
                 String Amount = amountText.getText().toString();
                 String toSend = purpose + " " + Amount;
