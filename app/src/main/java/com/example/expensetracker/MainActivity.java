@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final ListView myListView = findViewById(R.id.list_item);
+        ListView myListView = findViewById(R.id.list_item);
 
         //fetching the row when activity is loaded
 //        arrayAdapter.notifyDataSetChanged();
@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("dbFirst",  id_of_this_row+" " + expense.getCheck_for_update());
             expenses.add(data_of_this_row);
         }
+
 
 
         //db things end here
@@ -149,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
 
                 String row_data = expenses.get(i);
                 String a = row_data.contains(" ") ? row_data.split(" ")[0] : row_data;
+//                view.setBackgroundColor(getColor(R.color. colorPrimaryDark )) ;
                 int id_of_this_row_in_db =Integer.parseInt(a);
                 id_to_update_row = id_of_this_row_in_db;
                 db.make_check_column_yes_for_delete(id_to_update_row);
@@ -157,8 +159,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
-
-
 
     }
 
@@ -177,8 +177,6 @@ public class MainActivity extends AppCompatActivity {
         fetchTheCompleteList();
         arrayAdapter.notifyDataSetChanged();
     }
-
-
 
 
 
