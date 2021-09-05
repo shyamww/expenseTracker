@@ -1,27 +1,21 @@
 package com.example.expensetracker;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.expensetracker.adapter.RecyclerViewAdapter;
 import com.example.expensetracker.data.MyDbHandler;
 import com.example.expensetracker.model.Expense;
 
@@ -33,42 +27,58 @@ public class MainActivity extends AppCompatActivity {
     int tIn=0,tOut=0;
     double total_in= 0.0,total_out= 0.0;
     String myaddedGlobaldata;
-    ArrayList<String> expenses = new ArrayList<>();
-    MyDbHandler db = new MyDbHandler(MainActivity.this);
-    int id_to_update_row;
+    private RecyclerView recyclerView;
+    private RecyclerViewAdapter recyclerViewAdapter;
+    private ArrayList<Expense> expenseArrayList;
     ArrayAdapter<String> arrayAdapter;// = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, expenses);
+
+
+
+    MyDbHandler db = new MyDbHandler(MainActivity.this);
+
+    int id_to_update_row;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ListView myListView = findViewById(R.id.list_item);
-////
-        //fetching the row when activity is loaded
-//        arrayAdapter.notifyDataSetChanged();
-//        fetchTheCompleteList();
-//        arrayAdapter.notifyDataSetChanged();
 
-        //fetching ends
+        //Recyclerview initialization
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
+        Expense e01 = new Expense();
+        e01.setDetail("recy01");
+        e01.setAmount("100");
+        e01.setCheck_for_in_out("In");
+        e01.setCheck_for_update("No");
+
+        db.addExpense(e01);
+
+        expenseArrayList = new ArrayList<>();
 
         //get all the expenses
-        List<Expense> allexpense = db.getAllExpenses();
-        for(Expense expense: allexpense){
+        List<Expense> expenseList = db.getAllExpenses();
+        for(Expense expense: expenseList){
             int id_of_this_row = expense.getId();
             String detail_of_this_row = expense.getDetail();
             String amount_of_this_row = expense.getAmount();
             String in_or_out_of_this_row = expense.getCheck_for_in_out();
+            String check_for_update = expense.getCheck_for_update();
             String data_of_this_row = id_of_this_row + " " + detail_of_this_row +" -> " + amount_of_this_row + " = " + in_or_out_of_this_row;
-            Log.d("dbFirst",  id_of_this_row+" " + expense.getCheck_for_update());
-            expenses.add(data_of_this_row);
+            Log.d("dbFirst",  id_of_this_row+" "+detail_of_this_row+" "+ amount_of_this_row+" "+in_or_out_of_this_row+" "+check_for_update);
+            expenseArrayList.add(expense);
         }
 
 
+        // Use your recyclerView wala code
+        recyclerViewAdapter = new RecyclerViewAdapter(MainActivity.this, expenseArrayList);
+        recyclerView.setAdapter(recyclerViewAdapter);
 
-        //db things end here
-//        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, expenses);
-        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, expenses);
-        myListView.setAdapter(arrayAdapter);
+
         Button addItem = findViewById(R.id.btnIn);
         Button removeItem = findViewById(R.id.btnOut);
         Button refresh_list = findViewById(R.id.btn_refresh);
@@ -78,87 +88,87 @@ public class MainActivity extends AppCompatActivity {
         refresh_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                arrayAdapter.notifyDataSetChanged();
-                fetchTheCompleteList();
-                arrayAdapter.notifyDataSetChanged();
+                Toast.makeText(MainActivity.this, "Refresh button is clicked now", Toast.LENGTH_SHORT).show();
+//                arrayAdapter.notifyDataSetChanged();
+////                fetchTheCompleteList();
+//                arrayAdapter.notifyDataSetChanged();
             }
         });
 
         // In button
-        addItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int val = expenses.size();
-                goToInActivity();
-
-            }
-        });
-
-        // Out button
-        removeItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int val = expenses.size();
-                goToOutActivity();
-            }
-        });
-
-
-        //delete an item from the list
-//        myListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//        addItem.setOnClickListener(new View.OnClickListener() {
 //            @Override
-//            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                final int which_pos = i;
-//                String dataOfThisRow = expenses.get(which_pos);
-//                new AlertDialog.Builder(MainActivity.this)
-//                        .setIcon(android.R.drawable.ic_delete)
-//                        .setTitle("Are you sure ?")
-//                        .setMessage(dataOfThisRow)
-//                        .setNeutralButton("Update", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialogInterface, int i) {
-//                                Toast.makeText(MainActivity.this, "Update successfull", Toast.LENGTH_SHORT).show();
-//                                new AlertDialog.Builder(MainActivity.this)
-//                                        .setIcon(android.R.drawable.ic_dialog_info)
-//                                        .setTitle("Are you sure ?")
-//                                        .setMessage("UPDATE HO RHA H")
-//                                        .setNegativeButton("No", null)
-//                                        .show();
-//                            }
-//                        })
-//                        .setPositiveButton("yes", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialogInterface, int i) {
-//                                expenses.remove(which_pos);
-//                                arrayAdapter.notifyDataSetChanged();
-//
-//                            }
-//                        })
-//                        .setNegativeButton("No", null)
-//                        .show();
-//                return true;
+//            public void onClick(View view) {
+//                int val = expenses.size();
+//                goToInActivity();
 //
 //            }
 //        });
 
+        // Out button
+//        removeItem.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                int val = expenses.size();
+//                goToOutActivity();
+//            }
+//        });
+
+
+                                    //delete an item from the list
+                            //        myListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                            //            @Override
+                            //            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            //                final int which_pos = i;
+                            //                String dataOfThisRow = expenses.get(which_pos);
+                            //                new AlertDialog.Builder(MainActivity.this)
+                            //                        .setIcon(android.R.drawable.ic_delete)
+                            //                        .setTitle("Are you sure ?")
+                            //                        .setMessage(dataOfThisRow)
+                            //                        .setNeutralButton("Update", new DialogInterface.OnClickListener() {
+                            //                            @Override
+                            //                            public void onClick(DialogInterface dialogInterface, int i) {
+                            //                                Toast.makeText(MainActivity.this, "Update successfull", Toast.LENGTH_SHORT).show();
+                            //                                new AlertDialog.Builder(MainActivity.this)
+                            //                                        .setIcon(android.R.drawable.ic_dialog_info)
+                            //                                        .setTitle("Are you sure ?")
+                            //                                        .setMessage("UPDATE HO RHA H")
+                            //                                        .setNegativeButton("No", null)
+                            //                                        .show();
+                            //                            }
+                            //                        })
+                            //                        .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                            //                            @Override
+                            //                            public void onClick(DialogInterface dialogInterface, int i) {
+                            //                                expenses.remove(which_pos);
+                            //                                arrayAdapter.notifyDataSetChanged();
+                            //
+                            //                            }
+                            //                        })
+                            //                        .setNegativeButton("No", null)
+                            //                        .show();
+                            //                return true;
+                            //
+                            //            }
+                            //        });
+
         // Click an item
 
         // click an item in the list
-        myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                String row_data = expenses.get(i);
-                String a = row_data.contains(" ") ? row_data.split(" ")[0] : row_data;
-//                view.setBackgroundColor(getColor(R.color. colorPrimaryDark )) ;
-                int id_of_this_row_in_db =Integer.parseInt(a);
-                id_to_update_row = id_of_this_row_in_db;
-                db.make_check_column_yes_for_delete(id_to_update_row);
-//                Toast.makeText(MainActivity.this, row_data, Toast.LENGTH_SHORT).show();
-                startActivityForResult(new Intent(getApplicationContext(), updateDeleteActivity.class), 1001);
-            }
-
-        });
+//        myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//
+//                String row_data = expenses.get(i);
+//                String a = row_data.contains(" ") ? row_data.split(" ")[0] : row_data;
+//                int id_of_this_row_in_db =Integer.parseInt(a);
+//                id_to_update_row = id_of_this_row_in_db;
+//                db.make_check_column_yes_for_delete(id_to_update_row);
+////                Toast.makeText(MainActivity.this, row_data, Toast.LENGTH_SHORT).show();
+//                startActivityForResult(new Intent(getApplicationContext(), updateDeleteActivity.class), 1001);
+//            }
+//
+//        });
 
     }
 
@@ -167,16 +177,16 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    @Override
-    protected void onResume()
-    {
-        super.onResume();
-        Log.d("dbFirst", "Main");
-        Toast.makeText(this, "Main me hu bhai mai", Toast.LENGTH_SHORT).show();
-        arrayAdapter.notifyDataSetChanged();
-        fetchTheCompleteList();
-        arrayAdapter.notifyDataSetChanged();
-    }
+//    @Override
+//    protected void onResume()
+//    {
+//        super.onResume();
+//        Log.d("dbFirst", "Main");
+//        Toast.makeText(this, "Main me hu bhai mai", Toast.LENGTH_SHORT).show();
+//        arrayAdapter.notifyDataSetChanged();
+//        fetchTheCompleteList();
+//        arrayAdapter.notifyDataSetChanged();
+//    }
 
 
 
@@ -190,8 +200,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        MyDbHandler db = new MyDbHandler(MainActivity.this);
-//        super.onActivityResult(requestCode, resultCode, data);
         //In
         if(requestCode == 999 && resultCode == RESULT_OK)
         {
@@ -243,9 +251,6 @@ public class MainActivity extends AppCompatActivity {
             Log.d("dbFirst",  "Row is: " + myaddedGlobaldata );
             db.make_check_column_no_for_delete(id_to_update_row);
 
-//            }
-//            String amount_data = myaddedGlobaldata.substring(myaddedGlobaldata.lastIndexOf(" ")+1);
-
             // Updating the row
             try {
                 //  Block of code to try
@@ -261,21 +266,21 @@ public class MainActivity extends AppCompatActivity {
         calculateTotal();
     }
 
-    private void fetchTheCompleteList() {
-            List<Expense> allexpense = db.getAllExpenses();
-            total_in=total_out=0.0;
-            expenses.clear();
-        Log.d("dbFirst",  "------------------------------------------------------------------------------");
-            for (Expense expense : allexpense) {
-                int id_of_this_row = expense.getId();
-                String detail_of_this_row = expense.getDetail();
-                String amount_of_this_row = expense.getAmount();
-                String in_or_out_of_this_row = expense.getCheck_for_in_out();
-                String data_of_this_row = id_of_this_row + " " + detail_of_this_row + " -> " + amount_of_this_row + "==" + in_or_out_of_this_row;
-                Log.d("dbFirst",  id_of_this_row+"- " + expense.getCheck_for_update());
-                expenses.add(data_of_this_row);
-            }
-    }
+//    private void fetchTheCompleteList() {
+//            List<Expense> allexpense = db.getAllExpenses();
+//            total_in=total_out=0.0;
+//            expenses.clear();
+//        Log.d("dbFirst",  "------------------------------------------------------------------------------");
+//            for (Expense expense : allexpense) {
+//                int id_of_this_row = expense.getId();
+//                String detail_of_this_row = expense.getDetail();
+//                String amount_of_this_row = expense.getAmount();
+//                String in_or_out_of_this_row = expense.getCheck_for_in_out();
+//                String data_of_this_row = id_of_this_row + " " + detail_of_this_row + " -> " + amount_of_this_row + "==" + in_or_out_of_this_row;
+//                Log.d("dbFirst",  id_of_this_row+"- " + expense.getCheck_for_update());
+//                expenses.add(data_of_this_row);
+//            }
+//    }
 
     private void calculateTotal() {
         TextView totalVal = findViewById(R.id.totalInOut);
