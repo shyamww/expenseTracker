@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ListView myListView = findViewById(R.id.list_item);
-
+////
         //fetching the row when activity is loaded
 //        arrayAdapter.notifyDataSetChanged();
 //        fetchTheCompleteList();
