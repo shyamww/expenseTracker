@@ -36,12 +36,20 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> expenses = new ArrayList<>();
     MyDbHandler db = new MyDbHandler(MainActivity.this);
     int id_to_update_row;
+    ArrayAdapter<String> arrayAdapter;// = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, expenses);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         final ListView myListView = findViewById(R.id.list_item);
+
+        //fetching the row when activity is loaded
+//        arrayAdapter.notifyDataSetChanged();
+//        fetchTheCompleteList();
+//        arrayAdapter.notifyDataSetChanged();
+
+        //fetching ends
 
         //get all the expenses
         List<Expense> allexpense = db.getAllExpenses();
@@ -57,8 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         //db things end here
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, expenses);
-
+//        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, expenses);
+        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, expenses);
         myListView.setAdapter(arrayAdapter);
         Button addItem = findViewById(R.id.btnIn);
         Button removeItem = findViewById(R.id.btnOut);
@@ -133,6 +141,8 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
         // Click an item
+
+        // click an item in the list
         myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -148,7 +158,30 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+
+
     }
+
+
+
+
+
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        Log.d("dbFirst", "Main");
+        Toast.makeText(this, "Main me hu bhai mai", Toast.LENGTH_SHORT).show();
+        arrayAdapter.notifyDataSetChanged();
+        fetchTheCompleteList();
+        arrayAdapter.notifyDataSetChanged();
+    }
+
+
+
+
+
 
     private void  goToInActivity() {
         startActivityForResult(new Intent(getApplicationContext(), inActivity.class), 999);
@@ -165,7 +198,8 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode == 999 && resultCode == RESULT_OK)
         {
             tIn = tIn + 1;
-            myaddedGlobaldata = "+" + data.getStringExtra("message") ;
+            myaddedGlobaldata = data.getStringExtra("message") ;
+            Log.d("dbFirst",  "999 " );
 //            Toast.makeText(this, myaddedGlobaldata, Toast.LENGTH_SHORT).show();
             String detail_data = myaddedGlobaldata.contains(" ") ? myaddedGlobaldata.split(" ")[0] : myaddedGlobaldata;
             String amount_data = myaddedGlobaldata.substring(myaddedGlobaldata.lastIndexOf(" ")+1);
@@ -183,7 +217,8 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode == 1000 && resultCode == RESULT_OK)
         {
             tOut = tOut +1;
-            myaddedGlobaldata = "-" + data.getStringExtra("message_o");
+            myaddedGlobaldata = data.getStringExtra("message_o");
+            Log.d("dbFirst",  "1000 " );
 //            Toast.makeText(this, myaddedGlobaldata, Toast.LENGTH_SHORT).show();
             String detail_data = myaddedGlobaldata.contains(" ") ? myaddedGlobaldata.split(" ")[0] : myaddedGlobaldata;
             String amount_data = myaddedGlobaldata.substring(myaddedGlobaldata.lastIndexOf(" ")+1);
@@ -201,10 +236,28 @@ public class MainActivity extends AppCompatActivity {
         {
             tIn = tIn + 1;
             myaddedGlobaldata = data.getStringExtra("message_u") ;
+            Log.d("dbFirst",  "1001 " );
             String detail_data = myaddedGlobaldata.contains(" ") ? myaddedGlobaldata.split(" ")[0] : myaddedGlobaldata;
             String amount_data = myaddedGlobaldata.substring(myaddedGlobaldata.lastIndexOf(" ")+1);
-            // id is id_to_update_row
-            db.updateExpense(id_to_update_row, detail_data, amount_data);
+            Log.d("dbFirst",  "back from update to main " );
+
+            //change that column from yes to no
+            Log.d("dbFirst",  "Row is: " + myaddedGlobaldata );
+            db.make_check_column_no_for_delete(id_to_update_row);
+
+//            }
+//            String amount_data = myaddedGlobaldata.substring(myaddedGlobaldata.lastIndexOf(" ")+1);
+
+            // Updating the row
+            try {
+                //  Block of code to try
+                db.updateExpense(id_to_update_row, detail_data, amount_data);
+                Log.d("dbFirst", "Updated the row");
+            }
+            catch(Exception e) {
+                //  Block of code to handle errors
+                Log.d("dbFirst", "Not Updated");
+            }
 
         }
         calculateTotal();
@@ -214,12 +267,14 @@ public class MainActivity extends AppCompatActivity {
             List<Expense> allexpense = db.getAllExpenses();
             total_in=total_out=0.0;
             expenses.clear();
+        Log.d("dbFirst",  "------------------------------------------------------------------------------");
             for (Expense expense : allexpense) {
                 int id_of_this_row = expense.getId();
                 String detail_of_this_row = expense.getDetail();
                 String amount_of_this_row = expense.getAmount();
                 String in_or_out_of_this_row = expense.getCheck_for_in_out();
                 String data_of_this_row = id_of_this_row + " " + detail_of_this_row + " -> " + amount_of_this_row + "==" + in_or_out_of_this_row;
+                Log.d("dbFirst",  id_of_this_row+"- " + expense.getCheck_for_update());
                 expenses.add(data_of_this_row);
             }
     }

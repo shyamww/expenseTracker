@@ -6,7 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.example.expensetracker.MainActivity;
 import com.example.expensetracker.model.Expense;
 import com.example.expensetracker.params.Params;
 
@@ -47,7 +49,6 @@ public class MyDbHandler extends SQLiteOpenHelper {
         values.put(Params.KEY_AMOUNT, expense.getAmount());
         values.put(Params.KEY_CHECK_UPDATE, expense.getCheck_for_update());
         values.put(Params.KEY_IN_AND_OUT, expense.getCheck_for_in_out());
-
 
         try {
             //  Block of code to try
@@ -111,5 +112,46 @@ public class MyDbHandler extends SQLiteOpenHelper {
         db.delete(Params.TABLE_NAME,"check_for_update=?",new String[]{"Yes"});
         db.close();
     }
+
+    public ArrayList<String> return_the_data_of_the_row_to_update(){
+        SQLiteDatabase db = this.getReadableDatabase();
+//        String selectQuery = "SELECT  * FROM " + Params.TABLE_NAME + " WHERE "
+//                + Params.KEY_ID +"=" +idd;
+        String ckk = "Yes";
+//        String select = "Select * from "+ Params.TABLE_NAME + " WHERE " + "check_for_update=?", ckk;
+//        Cursor cursor = db.rawQuery(select, null);
+//        List<String > st= new ArrayList<>();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + Params.TABLE_NAME + " WHERE " +  "check_for_update=?",new String[]{"Yes"});
+        cursor.moveToFirst();
+
+        ArrayList<String> st = new ArrayList<>();
+        st.add(cursor.getString(1));
+        st.add(cursor.getString(2));
+
+        Log.d("dbFirst", cursor.getString(1) + "from mydbhandler" + cursor.getString(2));
+
+        cursor.close();
+        db.close();
+        return st;
+    }
+
+    public void make_check_column_no_for_delete(int idd){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues data = new ContentValues();
+        data.put(Params.KEY_CHECK_UPDATE,"No");
+        db.update(Params.TABLE_NAME, data, Params.KEY_ID +"=" +idd, null);
+        db.close();
+    }
+
+    public void make_check_column_no_for_delete_without_id(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues data = new ContentValues();
+        data.put(Params.KEY_CHECK_UPDATE,"No");
+        db.update(Params.TABLE_NAME, data, "check_for_update=?",new String[]{"Yes"});
+        Log.d("dbFirst", "without id [yes->no]");
+        db.close();
+    }
+
 
 }
