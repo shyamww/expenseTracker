@@ -31,7 +31,7 @@ public class updateDeleteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_delete);
 
-        // getting Rindex
+        // getting Rindex 
         Intent intent = getIntent();
         String r_index = intent.getStringExtra("Rindex");
         int ind = Integer.parseInt(r_index);
