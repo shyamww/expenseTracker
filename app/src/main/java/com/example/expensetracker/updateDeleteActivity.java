@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.expensetracker.data.MyDbHandler;
+import com.example.expensetracker.model.Expense;
 
 import java.util.ArrayList;
 
@@ -31,11 +32,12 @@ public class updateDeleteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_delete);
 
-        // getting Rindex 
+        // getting Rid
         Intent intent = getIntent();
-        String r_index = intent.getStringExtra("Rindex");
-        int ind = Integer.parseInt(r_index);
+        final String r_id = intent.getStringExtra("Rindex");
+        final int ind = Integer.parseInt(r_id);
         Toast.makeText(this, "-----"+ ind, Toast.LENGTH_SHORT).show();
+        db.make_check_column_yes_for_delete(ind);
 
 
         purposeText = findViewById(R.id.textPurpose_d);
@@ -71,6 +73,16 @@ public class updateDeleteActivity extends AppCompatActivity {
         updateData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                db.make_check_column_no_for_delete(ind);
+                String purpose = purposeText.getText().toString();
+                String amount = amountText.getText().toString();
+                Expense e1 = new Expense();
+                e1.setDetail(purpose);
+                e1.setAmount(amount);
+                e1.setCheck_for_update("No");
+//                e1.setCheck_for_in_out("Out");
+                //Adding data to the db
+                db.updateExpense(ind, purpose, amount);
                 returning_function();
             }
         });

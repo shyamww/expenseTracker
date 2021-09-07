@@ -95,41 +95,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             Expense expense = expenseList.get(position);
             Log.d("dbFirst", "an item is clicked");
             int id_to_update_row = expense.getId();
-            Toast.makeText(context, "clicked " + position, Toast.LENGTH_SHORT).show();
-
-//            String row_data = expenses.get(i);
-//                String a = row_data.contains(" ") ? row_data.split(" ")[0] : row_data;
-                int id_of_this_row_in_db =expense.getId();
-//                db.make_check_column_yes_for_delete(id_of_this_row_in_db);
-////                Toast.makeText(MainActivity.this, row_data, Toast.LENGTH_SHORT).show();
-
+            Toast.makeText(context, "clicked " + position + " " + id_to_update_row, Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(context, updateDeleteActivity.class);
-            intent.putExtra("Rindex",Integer.toString(position));
-//            try {
-//                //  Block of code to try
-////                db.make_check_column_yes_for_delete(id_to_update_row);
-//                db.make_check_column_yes_for_delete(id_to_update_row);
-//                Log.d("dbFirst", "fetched data ");
-//
-//            }
-//            catch(Exception e) {
-//                //  Block of code to handle errors
-//                Log.d("dbFirst", "e: "+ e);
-//            }
-
+            intent.putExtra("Rindex",Integer.toString(id_to_update_row));
             context.startActivity(intent);
-//            ((Activity) context).startActivityForResult(intent,((Activity) context).RESULT_OK);
         }
-
-
-
-
-//        @Override
-//        public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//            if (requestCode == 1001) {
-//                Toast.makeText(context, "Hello back", Toast.LENGTH_SHORT).show();
-//            }
-//        }
 
     }
 }
