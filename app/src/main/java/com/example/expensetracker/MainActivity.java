@@ -50,13 +50,13 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
-        Expense e01 = new Expense();
-        e01.setDetail("recy01");
-        e01.setAmount("100");
-        e01.setCheck_for_in_out("In");
-        e01.setCheck_for_update("No");
-
-        db.addExpense(e01);
+//        Expense e01 = new Expense();
+//        e01.setDetail("recy01");
+//        e01.setAmount("100");
+//        e01.setCheck_for_in_out("In");
+//        e01.setCheck_for_update("No");
+//
+//        db.addExpense(e01);
 
         expenseArrayList = new ArrayList<>();
 
@@ -90,29 +90,35 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Toast.makeText(MainActivity.this, "Refresh button is clicked now", Toast.LENGTH_SHORT).show();
 //                arrayAdapter.notifyDataSetChanged();
-////                fetchTheCompleteList();
-//                arrayAdapter.notifyDataSetChanged();
+//                Expense e02 = new Expense();
+//                String x = "-" + Integer.toString(tIn);
+//                tIn = tIn +1;
+//                e02.setDetail(x);
+//                e02.setAmount("100");
+//                e02.setCheck_for_in_out("In");
+//                e02.setCheck_for_update("No");
+//                db.addExpense(e02);
+                fetchTheCompleteList();
+                recyclerViewAdapter.notifyDataSetChanged();
             }
         });
 
         // In button
-//        addItem.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                int val = expenses.size();
-//                goToInActivity();
-//
-//            }
-//        });
+        addItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToInActivity();
+
+            }
+        });
 
         // Out button
-//        removeItem.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                int val = expenses.size();
-//                goToOutActivity();
-//            }
-//        });
+        removeItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToOutActivity();
+            }
+        });
 
 
                                     //delete an item from the list
@@ -152,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
                             //            }
                             //        });
 
-        // Click an item
+//         Click an item
 
         // click an item in the list
 //        myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -177,16 +183,16 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-//    @Override
-//    protected void onResume()
-//    {
-//        super.onResume();
-//        Log.d("dbFirst", "Main");
-//        Toast.makeText(this, "Main me hu bhai mai", Toast.LENGTH_SHORT).show();
-//        arrayAdapter.notifyDataSetChanged();
-//        fetchTheCompleteList();
-//        arrayAdapter.notifyDataSetChanged();
-//    }
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        Log.d("dbFirst", "Main");
+        Toast.makeText(this, "Main me hu bhai mai", Toast.LENGTH_SHORT).show();
+        recyclerViewAdapter.notifyDataSetChanged();
+        fetchTheCompleteList();
+        recyclerViewAdapter.notifyDataSetChanged();
+    }
 
 
 
@@ -225,7 +231,6 @@ public class MainActivity extends AppCompatActivity {
             tOut = tOut +1;
             myaddedGlobaldata = data.getStringExtra("message_o");
             Log.d("dbFirst",  "1000 " );
-//            Toast.makeText(this, myaddedGlobaldata, Toast.LENGTH_SHORT).show();
             String detail_data = myaddedGlobaldata.contains(" ") ? myaddedGlobaldata.split(" ")[0] : myaddedGlobaldata;
             String amount_data = myaddedGlobaldata.substring(myaddedGlobaldata.lastIndexOf(" ")+1);
             //Creating data for the db
@@ -266,21 +271,23 @@ public class MainActivity extends AppCompatActivity {
         calculateTotal();
     }
 
-//    private void fetchTheCompleteList() {
-//            List<Expense> allexpense = db.getAllExpenses();
-//            total_in=total_out=0.0;
-//            expenses.clear();
-//        Log.d("dbFirst",  "------------------------------------------------------------------------------");
-//            for (Expense expense : allexpense) {
-//                int id_of_this_row = expense.getId();
-//                String detail_of_this_row = expense.getDetail();
-//                String amount_of_this_row = expense.getAmount();
-//                String in_or_out_of_this_row = expense.getCheck_for_in_out();
-//                String data_of_this_row = id_of_this_row + " " + detail_of_this_row + " -> " + amount_of_this_row + "==" + in_or_out_of_this_row;
-//                Log.d("dbFirst",  id_of_this_row+"- " + expense.getCheck_for_update());
-//                expenses.add(data_of_this_row);
-//            }
-//    }
+    private void fetchTheCompleteList() {
+        List<Expense> allexpense = db.getAllExpenses();
+        total_in=total_out=0.0;
+        expenseArrayList.clear();
+        Log.d("dbFirst",  "------------------------------------------------------------------------------");
+        for (Expense expense : allexpense) {
+            int id_of_this_row = expense.getId();
+            String detail_of_this_row = expense.getDetail();
+            String amount_of_this_row = expense.getAmount();
+            String in_or_out_of_this_row = expense.getCheck_for_in_out();
+            String check_for_update = expense.getCheck_for_update();
+            String data_of_this_row = id_of_this_row + " " + detail_of_this_row + " -> " + amount_of_this_row + "==" + in_or_out_of_this_row;
+            Log.d("dbFirst",  id_of_this_row+" "+detail_of_this_row+" "+ amount_of_this_row+" "+in_or_out_of_this_row+" "+check_for_update);
+            expenseArrayList.add(expense);
+        }
+        recyclerViewAdapter.notifyDataSetChanged();
+    }
 
     private void calculateTotal() {
         TextView totalVal = findViewById(R.id.totalInOut);

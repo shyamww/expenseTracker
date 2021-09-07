@@ -31,6 +31,13 @@ public class updateDeleteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_delete);
 
+        // getting Rindex
+        Intent intent = getIntent();
+        String r_index = intent.getStringExtra("Rindex");
+        int ind = Integer.parseInt(r_index);
+        Toast.makeText(this, "-----"+ ind, Toast.LENGTH_SHORT).show();
+
+
         purposeText = findViewById(R.id.textPurpose_d);
         amountText = findViewById(R.id.textAmount_d);
         updateData = findViewById(R.id.btn_update);
@@ -41,8 +48,10 @@ public class updateDeleteActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         setTitle("Update");
 
-        //fetching the data of the selected row
 
+
+
+        //fetching the data of the selected row
         try {
             //  Block of code to try
             ArrayList temp = db.return_the_data_of_the_row_to_update();
