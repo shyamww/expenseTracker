@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TextView totalInOut_f = findViewById(R.id.totalInOut);
+//        TextView totalInOut_f = findViewById(R.id.totalInOut);
 
 
         //Recyclerview initialization
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                 total_out_amount = total_out_amount + d;
             }
 
-            totalInOut_f.setText("Total In: " + total_in_amount + " Total Out: " + total_out_amount);
+//            totalInOut_f.setText("Total In: " + total_in_amount + " Total Out: " + total_out_amount);
         }
 
 
@@ -291,7 +291,8 @@ public class MainActivity extends AppCompatActivity {
         List<Expense> allexpense = db.getAllExpenses();
         total_in_amount=total_out_amount=0.0;
         expenseArrayList.clear();
-        TextView totalInOut_f = findViewById(R.id.totalInOut);
+        TextView total_in_amount_value = findViewById(R.id.total_in_amount_value);
+        TextView total_out_amount_value = findViewById(R.id.total_out_amount_value);
         Log.d("dbFirst",  "------------------------------------------------------------------------------");
         for (Expense expense : allexpense) {
             int id_of_this_row = expense.getId();
@@ -310,15 +311,17 @@ public class MainActivity extends AppCompatActivity {
             else{
                 total_out_amount = total_out_amount + d;
             }
-            totalInOut_f.setText("Total In= " + total_in_amount + " Total Out= " + total_out_amount);
+//            totalInOut_f.setText("Total In= " + total_in_amount + " Total Out= " + total_out_amount);
+            total_in_amount_value.setText("+₹ " + Double.toString(total_in_amount));
+            total_out_amount_value.setText("-₹ "+ Double.toString(total_out_amount));
         }
         recyclerViewAdapter.notifyDataSetChanged();
     }
 
     private void calculateTotal() {
-        TextView totalVal = findViewById(R.id.totalInOut);
+//        TextView totalVal = findViewById(R.id.totalInOut);
         String s="Total In " + Integer.toString(tIn) + "  Total Out "+ Integer.toString(tOut);
-        totalVal.setText(s);
+//        totalVal.setText(s);
     }
 
 }
