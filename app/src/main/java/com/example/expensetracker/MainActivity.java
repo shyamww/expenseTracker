@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.expensetracker.adapter.RecyclerViewAdapter;
 import com.example.expensetracker.data.MyDbHandler;
 import com.example.expensetracker.model.Expense;
+import com.example.expensetracker.utils.SpacingItemDecorator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
         //Recyclerview initialization
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
+        SpacingItemDecorator itemDecorator = new SpacingItemDecorator(10);
+        recyclerView.addItemDecoration(itemDecorator);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 

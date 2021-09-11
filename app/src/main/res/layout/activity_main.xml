@@ -51,11 +51,10 @@
 
 
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="112dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="@+id/totalInOut"
-        app:layout_constraintBottom_toTopOf="@+id/btn_refresh"
-        tools:ignore="MissingConstraints"
-         />
+        tools:ignore="MissingConstraints" />
 
     <!--    <ListView-->
     <!--        android:id="@+id/list_item"-->

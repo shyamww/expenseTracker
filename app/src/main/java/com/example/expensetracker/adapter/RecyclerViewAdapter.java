@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.example.expensetracker.R;
 import com.example.expensetracker.data.MyDbHandler;
 import com.example.expensetracker.model.Expense;
 import com.example.expensetracker.updateDeleteActivity;
+import com.example.expensetracker.utils.SpacingItemDecorator;
 
 import java.util.List;
 
@@ -50,13 +52,27 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(@NonNull RecyclerViewAdapter.ViewHolder holder, int position) {
         // khali card aayega ek(blank single row aayega)
         Expense expense = expenseList.get(position);
-
+        String check_for_in_and_out = expense.getCheck_for_in_out();
         holder.expenseDetail.setText(expense.getDetail());
         holder.expenseAmount.setText(expense.getAmount());
         holder.checkForUpdate.setText(expense.getCheck_for_update());
-        holder.checkForInOut.setText(expense.getCheck_for_in_out());
+        holder.checkForInOut.setText(check_for_in_and_out);
         int x = expense.getId();
         holder.expenseId.setText(Integer.toString(x));
+
+
+        if(check_for_in_and_out.equals("In"))
+        {
+            holder.itemView.setBackgroundColor(Color.parseColor("#99ffb3"));
+        }
+        else
+        {
+//            Toast.makeText(context, "yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy", Toast.LENGTH_SHORT).show();
+            Log.d("dbFirst", "data: " + x + check_for_in_and_out +x);
+            holder.itemView.setBackgroundColor(Color.parseColor("#ffb3b3"));
+        }
+
+
 
     }
 
@@ -95,6 +111,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             Expense expense = expenseList.get(position);
             Log.d("dbFirst", "an item is clicked");
             int id_to_update_row = expense.getId();
+            itemView.setBackgroundColor(Color.parseColor("#808080"));
             Toast.makeText(context, "clicked " + position + " " + id_to_update_row, Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(context, updateDeleteActivity.class);
             intent.putExtra("Rindex",Integer.toString(id_to_update_row));
