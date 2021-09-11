@@ -9,7 +9,7 @@
     <TextView
         android:id="@+id/totalInOut"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:background="@color/colorAccent"
         android:text="Total In        Total Out"
         android:textAlignment="center"
@@ -40,7 +40,6 @@
         android:layout_height="wrap_content"
         android:text="Refresh"
         app:layout_constraintBottom_toBottomOf="parent"
-
         app:layout_constraintEnd_toStartOf="@+id/btnIn"
         app:layout_constraintStart_toEndOf="@+id/btnOut" />
 
@@ -49,12 +48,12 @@
         android:layout_width="match_parent"
         android:layout_height="480dp"
 
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/totalInOut"
+        app:layout_constraintBottom_toTopOf="@+id/btnOut"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp" />
 
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="112dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/totalInOut"
-        tools:ignore="MissingConstraints" />
 
     <!--    <ListView-->
     <!--        android:id="@+id/list_item"-->

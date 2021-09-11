@@ -26,6 +26,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     int tIn=0,tOut=0;
+    double total_in_amount=0, total_out_amount=0;
     double total_in= 0.0,total_out= 0.0;
     String myaddedGlobaldata;
     private RecyclerView recyclerView;
@@ -43,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        TextView totalInOut_f = findViewById(R.id.totalInOut);
 
 
         //Recyclerview initialization
@@ -74,6 +77,16 @@ public class MainActivity extends AppCompatActivity {
             String data_of_this_row = id_of_this_row + " " + detail_of_this_row +" -> " + amount_of_this_row + " = " + in_or_out_of_this_row;
             Log.d("dbFirst",  id_of_this_row+" "+detail_of_this_row+" "+ amount_of_this_row+" "+in_or_out_of_this_row+" "+check_for_update);
             expenseArrayList.add(expense);
+
+            double d = Double.parseDouble(amount_of_this_row);
+            if(in_or_out_of_this_row.equals("In")){
+                total_in_amount =  total_in_amount + d;
+            }
+            else{
+                total_out_amount = total_out_amount + d;
+            }
+
+            totalInOut_f.setText("Total In: " + total_in_amount + " Total Out: " + total_out_amount);
         }
 
 
@@ -246,38 +259,39 @@ public class MainActivity extends AppCompatActivity {
             db.addExpense(e1);
         }
         //Item click or Update
-        if(requestCode == 1001 && resultCode == RESULT_OK)
-        {
-            tIn = tIn + 1;
-            myaddedGlobaldata = data.getStringExtra("message_u") ;
-            Log.d("dbFirst",  "1001 " );
-            String detail_data = myaddedGlobaldata.contains(" ") ? myaddedGlobaldata.split(" ")[0] : myaddedGlobaldata;
-            String amount_data = myaddedGlobaldata.substring(myaddedGlobaldata.lastIndexOf(" ")+1);
-            Log.d("dbFirst",  "back from update to main " );
-
-            //change that column from yes to no
-            Log.d("dbFirst",  "Row is: " + myaddedGlobaldata );
-            db.make_check_column_no_for_delete(id_to_update_row);
-
-            // Updating the row
-            try {
-                //  Block of code to try
-                db.updateExpense(id_to_update_row, detail_data, amount_data);
-                Log.d("dbFirst", "Updated the row");
-            }
-            catch(Exception e) {
-                //  Block of code to handle errors
-                Log.d("dbFirst", "Not Updated");
-            }
-
-        }
+//        if(requestCode == 1001 && resultCode == RESULT_OK)
+//        {
+//            tIn = tIn + 1;
+//            myaddedGlobaldata = data.getStringExtra("message_u") ;
+//            Log.d("dbFirst",  "1001 " );
+//            String detail_data = myaddedGlobaldata.contains(" ") ? myaddedGlobaldata.split(" ")[0] : myaddedGlobaldata;
+//            String amount_data = myaddedGlobaldata.substring(myaddedGlobaldata.lastIndexOf(" ")+1);
+//            Log.d("dbFirst",  "back from update to main " );
+//
+//            //change that column from yes to no
+//            Log.d("dbFirst",  "Row is: " + myaddedGlobaldata );
+//            db.make_check_column_no_for_delete(id_to_update_row);
+//
+//            // Updating the row
+//            try {
+//                //  Block of code to try
+//                db.updateExpense(id_to_update_row, detail_data, amount_data);
+//                Log.d("dbFirst", "Updated the row");
+//            }
+//            catch(Exception e) {
+//                //  Block of code to handle errors
+//                Log.d("dbFirst", "Not Updated");
+//            }
+//
+//        }
         calculateTotal();
     }
 
     private void fetchTheCompleteList() {
         List<Expense> allexpense = db.getAllExpenses();
-        total_in=total_out=0.0;
+        total_in_amount=total_out_amount=0.0;
         expenseArrayList.clear();
+        TextView totalInOut_f = findViewById(R.id.totalInOut);
         Log.d("dbFirst",  "------------------------------------------------------------------------------");
         for (Expense expense : allexpense) {
             int id_of_this_row = expense.getId();
@@ -288,6 +302,15 @@ public class MainActivity extends AppCompatActivity {
             String data_of_this_row = id_of_this_row + " " + detail_of_this_row + " -> " + amount_of_this_row + "==" + in_or_out_of_this_row;
             Log.d("dbFirst",  id_of_this_row+" "+detail_of_this_row+" "+ amount_of_this_row+" "+in_or_out_of_this_row+" "+check_for_update);
             expenseArrayList.add(expense);
+
+            double d = Double.parseDouble(amount_of_this_row);
+            if(in_or_out_of_this_row.equals("In")){
+                total_in_amount =  total_in_amount + d;
+            }
+            else{
+                total_out_amount = total_out_amount + d;
+            }
+            totalInOut_f.setText("Total In= " + total_in_amount + " Total Out= " + total_out_amount);
         }
         recyclerViewAdapter.notifyDataSetChanged();
     }
