@@ -36,8 +36,15 @@ public class outActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     String purpose = purposeText.getText().toString();
                     String Amount = amountText.getText().toString();
-                    String toSend = purpose + " " + Amount;
 
+
+                    if(purpose.isEmpty()){
+                        purpose = "-";
+                    }
+                    if(Amount.isEmpty()){
+                        Amount = "0.0";
+                    }
+                    String toSend = purpose + " " + Amount;
                     Intent intent = new Intent();
                     intent.putExtra("message_o", toSend);
                     setResult(RESULT_OK, intent);

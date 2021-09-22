@@ -21,6 +21,8 @@ import com.example.expensetracker.model.Expense;
 import com.example.expensetracker.utils.SpacingItemDecorator;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -204,7 +206,6 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onResume();
         Log.d("dbFirst", "Main");
-        Toast.makeText(this, "Main me hu bhai mai", Toast.LENGTH_SHORT).show();
         recyclerViewAdapter.notifyDataSetChanged();
         fetchTheCompleteList();
         recyclerViewAdapter.notifyDataSetChanged();
@@ -225,38 +226,91 @@ public class MainActivity extends AppCompatActivity {
         //In
         if(requestCode == 999 && resultCode == RESULT_OK)
         {
+            Date currentTime = Calendar.getInstance().getTime();
             tIn = tIn + 1;
             myaddedGlobaldata = data.getStringExtra("message") ;
-            Log.d("dbFirst",  "999 " );
+            Log.d("dbFirst",  "Inside In return " );
 //            Toast.makeText(this, myaddedGlobaldata, Toast.LENGTH_SHORT).show();
             String detail_data = myaddedGlobaldata.contains(" ") ? myaddedGlobaldata.split(" ")[0] : myaddedGlobaldata;
             String amount_data = myaddedGlobaldata.substring(myaddedGlobaldata.lastIndexOf(" ")+1);
 
-            //Creating data for the db
-            Expense e1 = new Expense();
-            e1.setDetail(detail_data);
-            e1.setAmount(amount_data);
-            e1.setCheck_for_update("No");
-            e1.setCheck_for_in_out("In");
-            //Adding data to the db
-            db.addExpense(e1);
+            if(detail_data.equals("-") && amount_data.equals("0.0")){
+                Log.d("dbFirst", "data not pushed to the database");
+            }
+            else
+            {
+                String hours = String.valueOf(currentTime.getHours());
+                String minute = String.valueOf(currentTime.getMinutes());
+                String second = String.valueOf(currentTime.getSeconds());
+                String year = String.valueOf(currentTime.getYear() + 1900);
+                String month = String.valueOf(currentTime.getMonth()+1);
+                String date = String.valueOf(currentTime.getDate());
+                String day = String.valueOf(currentTime.getDay());
+                Log.d("dbFirst", "hr:"+ hours + "-minute:" + minute + "-sec:"+ second + "-yr:"+year+"-mn:"+month+"-date:"+date+"-day:"+day);
+
+                //Creating data for the db
+                Expense e1 = new Expense();
+                e1.setDetail(detail_data);
+                e1.setAmount(amount_data);
+                e1.setCheck_for_update("No");
+                e1.setCheck_for_in_out("In");
+                e1.setHour(hours);
+                e1.setMin(minute);
+                e1.setSec(second);
+                e1.setDay(day);
+                e1.setMonth(month);
+                e1.setYear(year);
+                e1.setDate(date);
+
+                //Adding data to the db
+                db.addExpense(e1);
+            }
+
         }
         //Out
         if(requestCode == 1000 && resultCode == RESULT_OK)
         {
             tOut = tOut +1;
+            Date currentTime = Calendar.getInstance().getTime();
             myaddedGlobaldata = data.getStringExtra("message_o");
-            Log.d("dbFirst",  "1000 " );
+            Log.d("dbFirst",  "Inside Out return " );
             String detail_data = myaddedGlobaldata.contains(" ") ? myaddedGlobaldata.split(" ")[0] : myaddedGlobaldata;
             String amount_data = myaddedGlobaldata.substring(myaddedGlobaldata.lastIndexOf(" ")+1);
-            //Creating data for the db
-            Expense e1 = new Expense();
-            e1.setDetail(detail_data);
-            e1.setAmount(amount_data);
-            e1.setCheck_for_update("No");
-            e1.setCheck_for_in_out("Out");
-            //Adding data to the db
-            db.addExpense(e1);
+
+            if(detail_data.equals("-") && amount_data.equals("0.0")){
+                Log.d("dbFirst", "data not pushed to the database");
+            }
+            else
+            {
+                //Creating data for the db
+                String hours = String.valueOf(currentTime.getHours());
+                String minute = String.valueOf(currentTime.getMinutes());
+                String second = String.valueOf(currentTime.getSeconds());
+                String year = String.valueOf(currentTime.getYear() + 1900);
+                String month = String.valueOf(currentTime.getMonth()+1);
+                String date = String.valueOf(currentTime.getDate());
+                String day = String.valueOf(currentTime.getDay());
+                Log.d("dbFirst", "hr:"+ hours + "-minute:" + minute + "-sec:"+ second + "-yr:"+year+"-mn:"+month+"-date:"+date+"-day:"+day);
+
+                //Creating data for the db
+                Expense e1 = new Expense();
+                e1.setDetail(detail_data);
+                e1.setAmount(amount_data);
+                e1.setCheck_for_update("No");
+                e1.setCheck_for_in_out("Out");
+                e1.setHour(hours);
+                e1.setMin(minute);
+                e1.setSec(second);
+                e1.setDay(day);
+                e1.setMonth(month);
+                e1.setYear(year);
+                e1.setDate(date);
+
+
+                //Adding data to the db
+                db.addExpense(e1);
+            }
+
         }
         //Item click or Update
 //        if(requestCode == 1001 && resultCode == RESULT_OK)
@@ -300,8 +354,22 @@ public class MainActivity extends AppCompatActivity {
             String amount_of_this_row = expense.getAmount();
             String in_or_out_of_this_row = expense.getCheck_for_in_out();
             String check_for_update = expense.getCheck_for_update();
+
+            // printing the date from the db
+            String hour = expense.getHour();
+              String min = expense.getMin();
+              String sec = expense.getSec();
+              String day = expense.getDay();
+              String month = expense.getMonth();
+              String year = expense.getYear();
+              String date = expense.getDate();
+
             String data_of_this_row = id_of_this_row + " " + detail_of_this_row + " -> " + amount_of_this_row + "==" + in_or_out_of_this_row;
-            Log.d("dbFirst",  id_of_this_row+" "+detail_of_this_row+" "+ amount_of_this_row+" "+in_or_out_of_this_row+" "+check_for_update);
+            Log.d("dbFirst",  id_of_this_row+"``"
+                    +detail_of_this_row+" "+ amount_of_this_row+" "+
+                    in_or_out_of_this_row+" "+check_for_update + " "+
+                    hour + " " + min + " " + sec + " " + day + " " + month + " "+
+                    year + " " + date );
             expenseArrayList.add(expense);
 
             double d = Double.parseDouble(amount_of_this_row);

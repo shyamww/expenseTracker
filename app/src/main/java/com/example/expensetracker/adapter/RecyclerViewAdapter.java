@@ -20,6 +20,8 @@ import com.example.expensetracker.model.Expense;
 import com.example.expensetracker.updateDeleteActivity;
 import com.example.expensetracker.utils.SpacingItemDecorator;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -54,11 +56,22 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Expense expense = expenseList.get(position);
         String check_for_in_and_out = expense.getCheck_for_in_out();
         holder.expenseDetail.setText(expense.getDetail());
-        holder.expenseAmount.setText(expense.getAmount());
-        holder.checkForUpdate.setText(expense.getCheck_for_update());
-        holder.checkForInOut.setText(check_for_in_and_out);
+        holder.expenseAmount.setText("₹ "+expense.getAmount());
+//        holder.checkForUpdate.setText(expense.getCheck_for_update());
+//        holder.checkForInOut.setText(check_for_in_and_out);
+        holder.expenseHr.setText(expense.getHour()+":");
+        holder.expenseMin.setText(expense.getMin());
+        holder.expenseDate.setText(expense.getDate()+"-");
+        holder.expenseMonth.setText(expense.getMonth()+"-");
+        holder.expenseYear.setText(expense.getYear());
         int x = expense.getId();
-        holder.expenseId.setText(Integer.toString(x));
+
+
+
+//        holder.expenseId.setText(String.valueOf(x));
+
+
+//        holder.expenseId.setText(String.valueOf(currentTime));
 
 
         if(check_for_in_and_out.equals("In"))
@@ -67,7 +80,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
         else
         {
-//            Toast.makeText(context, "yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy", Toast.LENGTH_SHORT).show();
             Log.d("dbFirst", "data: " + x + check_for_in_and_out +x);
             holder.itemView.setBackgroundColor(Color.parseColor("#ffb3b3"));
         }
@@ -88,9 +100,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 //        public TextView expenseId;
         public TextView expenseDetail;
         public TextView expenseAmount;
-        public TextView checkForUpdate;
-        public TextView checkForInOut;
-        public TextView expenseId;
+        public TextView expenseHr;
+        public TextView expenseMin;
+        public TextView expenseDate;
+        public TextView expenseMonth;
+        public TextView expenseYear;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -98,11 +112,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
             expenseDetail = itemView.findViewById(R.id.textView);
             expenseAmount = itemView.findViewById(R.id.textView2);
-            checkForUpdate = itemView.findViewById(R.id.textView3);
-            checkForInOut = itemView.findViewById(R.id.textView4);
-            expenseId = itemView.findViewById(R.id.textView5);
-
-
+            expenseHr = itemView.findViewById(R.id.text_hr);
+            expenseMin = itemView.findViewById(R.id.text_min);
+            expenseDate = itemView.findViewById(R.id.text_date);
+            expenseMonth = itemView.findViewById(R.id.text_month);
+            expenseYear = itemView.findViewById(R.id.text_year);
         }
 
         @Override
@@ -112,7 +126,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             Log.d("dbFirst", "an item is clicked");
             int id_to_update_row = expense.getId();
             itemView.setBackgroundColor(Color.parseColor("#808080"));
-            Toast.makeText(context, "clicked " + position + " " + id_to_update_row, Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(context, updateDeleteActivity.class);
             intent.putExtra("Rindex",Integer.toString(id_to_update_row));
             context.startActivity(intent);

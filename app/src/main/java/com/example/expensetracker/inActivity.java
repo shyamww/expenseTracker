@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -37,8 +38,19 @@ public class inActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String purpose = purposeText.getText().toString();
                 String Amount = amountText.getText().toString();
-                String toSend = purpose + " " + Amount;
 
+
+                if(purpose.isEmpty()){
+                    purpose = "-";
+                }
+                if(Amount.isEmpty()){
+                    Amount = "0.0";
+                }
+
+                Log.d("dbFirst", "inputData:P" +purpose + "PA" + Amount +"A" );
+
+                String toSend = purpose + " " + Amount;
+                Log.d("dbFirst", "toSend: " + toSend);
                 Intent intent = new Intent();
                 intent.putExtra("message", toSend);
                 setResult(RESULT_OK, intent);

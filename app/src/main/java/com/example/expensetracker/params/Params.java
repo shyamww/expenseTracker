@@ -11,4 +11,13 @@ public class Params {
     public static final String KEY_AMOUNT = "amount";
     public static final String KEY_CHECK_UPDATE = "check_for_update";
     public static final String KEY_IN_AND_OUT = "check_for_in_out";
+
+    public static final String KEY_HOUR = "hour";
+    public static final String KEY_MIN = "min";
+    public static final String KEY_SEC = "sec";
+    public static final String KEY_DAY = "day";
+    public static final String KEY_MONTH = "month";
+    public static final String KEY_YEAR = "year";
+    public static final String KEY_DATE = "date";
+
 }

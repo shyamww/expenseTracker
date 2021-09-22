@@ -20,12 +20,15 @@ public class MyDbHandler extends SQLiteOpenHelper {
         super(context, Params.DB_NAME, null, Params.DB_VERSION);
     }
 
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         String create = "CREATE TABLE " + Params.TABLE_NAME + "("
                 + Params.KEY_ID + " INTEGER PRIMARY KEY," + Params.KEY_DETAIL
                 + " TEXT, " + Params.KEY_AMOUNT + " TEXT, " + Params.KEY_CHECK_UPDATE + " TEXT, "
-                + Params.KEY_IN_AND_OUT + " TEXT" + ")";
+                + Params.KEY_IN_AND_OUT + " TEXT, " + Params.KEY_HOUR + " TEXT, " + Params.KEY_MIN
+                + " TEXT, " + Params.KEY_SEC + " TEXT, " + Params.KEY_DAY + " TEXT, " + Params.KEY_MONTH
+                + " TEXT, " + Params.KEY_YEAR + " TEXT, " + Params.KEY_DATE + " TEXT " +")";
 
         Log.d("dbFirst", "my first db created: " + create);
         db.execSQL(create);
@@ -49,6 +52,15 @@ public class MyDbHandler extends SQLiteOpenHelper {
         values.put(Params.KEY_AMOUNT, expense.getAmount());
         values.put(Params.KEY_CHECK_UPDATE, expense.getCheck_for_update());
         values.put(Params.KEY_IN_AND_OUT, expense.getCheck_for_in_out());
+
+        //date wala data is here
+        values.put(Params.KEY_HOUR, expense.getHour());
+        values.put(Params.KEY_MIN, expense.getMin());
+        values.put(Params.KEY_SEC, expense.getSec());
+        values.put(Params.KEY_DAY, expense.getDay());
+        values.put(Params.KEY_MONTH, expense.getMonth());
+        values.put(Params.KEY_YEAR, expense.getYear());
+        values.put(Params.KEY_DATE, expense.getDate());
 
         try {
             //  Block of code to try
@@ -81,6 +93,15 @@ public class MyDbHandler extends SQLiteOpenHelper {
                 expense.setAmount(cursor.getString(2));
                 expense.setCheck_for_update(cursor.getString(3));
                 expense.setCheck_for_in_out(cursor.getString(4));
+                // date data
+                expense.setHour(cursor.getString(5));
+                expense.setMin(cursor.getString(6));
+                expense.setSec(cursor.getString(7));
+                expense.setDay(cursor.getString(8));
+                expense.setMonth(cursor.getString(9));
+                expense.setYear(cursor.getString(10));
+                expense.setDate(cursor.getString(11));
+
                 expenseList.add(expense);
 
             }while(cursor.moveToNext());
@@ -115,13 +136,7 @@ public class MyDbHandler extends SQLiteOpenHelper {
 
     public ArrayList<String> return_the_data_of_the_row_to_update(){
         SQLiteDatabase db = this.getReadableDatabase();
-//        String selectQuery = "SELECT  * FROM " + Params.TABLE_NAME + " WHERE "
-//                + Params.KEY_ID +"=" +idd;
         String ckk = "Yes";
-//        String select = "Select * from "+ Params.TABLE_NAME + " WHERE " + "check_for_update=?", ckk;
-//        Cursor cursor = db.rawQuery(select, null);
-//        List<String > st= new ArrayList<>();
-
         Cursor cursor = db.rawQuery("SELECT * FROM " + Params.TABLE_NAME + " WHERE " +  "check_for_update=?",new String[]{"Yes"});
         cursor.moveToFirst();
 
@@ -129,7 +144,7 @@ public class MyDbHandler extends SQLiteOpenHelper {
         st.add(cursor.getString(1));
         st.add(cursor.getString(2));
 
-        Log.d("dbFirst", cursor.getString(1) + "from mydbhandler" + cursor.getString(2));
+//        Log.d("dbFirst", cursor.getString(1) + "from mydbhandler" + cursor.getString(2));
 
         cursor.close();
         db.close();
